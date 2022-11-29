@@ -47,8 +47,8 @@ const CompanyLists = (props) => {
                                 <h2 className=" text-xl font-bold">{language === 'TH' ? item.N_COMPANY_T : item.N_COMPANY_E}</h2>
                                 <hr className="my-2 border-gray-800" />
                                 {item.marketcap && <h3 h3 className="font-bold">{language === 'TH' ? "มูลค่าหลักทรัพย์" : "MarketCap"} : <span className="font-medium">{item.marketcap.toLocaleString()} {language === 'TH' ? "บาท" : "Bath"} </span></h3>}
-                                <h3 className="font-bold">{language === 'TH' ? "รายละเอียด" : "Description"} : <span className="font-medium leading-9">{language === 'TH' ? item.N_BUSINESS_TYPE_T : item.N_BUSINESS_TYPE_E}</span>
-                                </h3>
+                                <p className="font-bold">{language === 'TH' ? "รายละเอียด" : "Description"} : <span className="font-medium leading-9">{language === 'TH' ? item.N_BUSINESS_TYPE_T : item.N_BUSINESS_TYPE_E}</span>
+                                </p>
                             </div>
                         )
                     })
