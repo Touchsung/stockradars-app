@@ -1,13 +1,13 @@
 import { useState } from "react"
 import CompanyLists from "./components/CompanyLists"
-import SearchComponent from "./components/SearchComponent"
+import NavComponent from "./components/NavComponent"
 
 const App = () => {
-    const [searchName, setSearchName] = useState('')
+    const [language, setLanguage] = useState("TH")
     return (
         <>
-            <SearchComponent searchName={searchName} setSearchName={setSearchName} />
-            <CompanyLists searchName={searchName} />
+            <NavComponent language={language} setLanguage={setLanguage} />
+            <CompanyLists language={language} />
         </>
     )
 }

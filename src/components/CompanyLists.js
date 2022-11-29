@@ -3,11 +3,17 @@ import { useEffect, useState } from "react"
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
 
 const CompanyLists = (props) => {
-    // const { searchName } = props
+    const { language } = props
     const [companyLists, setCompanyLists] = useState([])
     const [page, setPage] = useState(1)
     const amountCardPerPage = 5
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+    }
 
     const getCompanyLists = async () => {
         const response = await axios.get('https://stockradars.co/assignment/data.php')
@@ -17,10 +23,12 @@ const CompanyLists = (props) => {
     const handlePage = (action) => {
         if (action === "next" && page < Math.ceil(companyLists.length / amountCardPerPage)) {
             setPage(page + 1)
+            scrollToTop()
         }
 
         if (action === "back" && page > 1) {
             setPage(page - 1)
+            scrollToTop()
         }
 
     }
@@ -30,26 +38,28 @@ const CompanyLists = (props) => {
     }, [])
 
     return (
-        <section className="w-screen max-w-screen-2xl min-h-screen mx-auto text-gray-800 px-40">
-            {
-                companyLists.slice(amountCardPerPage * page - amountCardPerPage, amountCardPerPage * page).map((item, index) => {
-                    return (
-                        <div key={index} className=" bg-white shadow rounded-md p-10 flex flex-col gap-2 mt-10">
-                            <h2 className=" text-xl font-bold">{item.N_COMPANY_T}</h2>
-                            <hr className="my-2 border-gray-800" />
-                            <h3 className="font-bold">มูลค่าหลักทรัพย์ : <span className="font-medium">{item.marketcap.toLocaleString()} บาท</span></h3>
-                            <h3 className="font-bold">รายละเอียด : <span className="font-medium leading-9">{item.N_BUSINESS_TYPE_T}</span>
-                            </h3>
-                        </div>
-                    )
-                })
-            }
-            <div className="page flex items-center gap-2 justify-center my-10">
-                <GrFormPrevious className="text-2xl" onClick={() => handlePage("back")} />
-                <h4 className="font-bold">{page} / {Math.ceil(companyLists.length / amountCardPerPage)} </h4>
-                <GrFormNext className="text-2xl" onClick={() => handlePage("next")} />
-            </div>
-        </section>
+        <div className="min-w-screen bg-slate-100">
+            <section className="container max-w-screen-2xl mx-auto text-gray-800 px-10 md:px-40 py-10 relative">
+                {
+                    companyLists.slice(amountCardPerPage * page - amountCardPerPage, amountCardPerPage * page).map((item, index) => {
+                        return (
+                            <div key={index} className=" bg-white shadow rounded-md p-10 flex flex-col gap-2 mb-10">
+                                <h2 className=" text-xl font-bold">{language === 'TH' ? item.N_COMPANY_T : item.N_COMPANY_E}</h2>
+                                <hr className="my-2 border-gray-800" />
+                                {item.marketcap && <h3 h3 className="font-bold">{language === 'TH' ? "มูลค่าหลักทรัพย์" : "MarketCap"} : <span className="font-medium">{item.marketcap.toLocaleString()} {language === 'TH' ? "บาท" : "Bath"} </span></h3>}
+                                <h3 className="font-bold">{language === 'TH' ? "รายละเอียด" : "Description"} : <span className="font-medium leading-9">{language === 'TH' ? item.N_BUSINESS_TYPE_T : item.N_BUSINESS_TYPE_E}</span>
+                                </h3>
+                            </div>
+                        )
+                    })
+                }
+                <div className="page flex items-center gap-2 justify-center">
+                    <GrFormPrevious className="text-2xl" onClick={() => handlePage("back")} />
+                    <h4 className="font-bold">{page} / {Math.ceil(companyLists.length / amountCardPerPage)} </h4>
+                    <GrFormNext className="text-2xl" onClick={() => handlePage("next")} />
+                </div>
+            </section>
+        </div>
     )
 }
 
